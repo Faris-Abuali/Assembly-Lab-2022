@@ -28,7 +28,8 @@ org 100h
         DEC strLen
         ; -- update the counter CX --
         MOV CX, 0000h
-        MOV CL, strLen
+        MOV CL, strLen 
+        INC CL
         ; --- print new line ---
         LEA DX, newLine
         MOV AH, 09h
@@ -40,7 +41,3 @@ org 100h
         MOV AH, 04Ch
         INT 21h 
 ret
-
-
-
-
