@@ -3,11 +3,13 @@
 
 org 100h
 
-.data             
+.data         
+    NL equ 0Ah
+    CR equ 0Dh            
     strEnter DB "Please enter a number:", 0Dh, 0Ah, "$"
-    strPos DB "Positive Number", 0Dh, 0Ah,"$"
-    strNeg DB "Negative Number",0Dh, 0Ah,"$"
-    strZero DB "Entered Number is Zero",0Dh, 0Ah,"$"
+    strPos DB NL, CR, "Positive Number", 0Dh, 0Ah,"$"
+    strNeg DB NL, CR, "Negative Number",0Dh, 0Ah,"$"
+    strZero DB NL, CR, "Zero",0Dh, 0Ah,"$"
     newLine DB 0dh, 0ah, '$'
 .code        
     MOV AH, 09h
@@ -17,36 +19,34 @@ org 100h
     MOV AH, 01h
     INT 21h
     ;---------------  
-    SUB AL, 30h  ; convert the ASCII to the corresponding number
+    ;SUB AL, 30h  ; convert the ASCII to the corresponding number
     MOV AH, 09h
 
     
-    CMP AL, "-"
-    JA nega
-    
-    CMP AL, 0
+    CMP AL, "0"
     JE zero 
     
-    CMP AL, '-'
-    JE nega
+    CMP AL, "0"
+    JA pos
     
-    ; --- if reaches here, then number is positive ---         
-    LEA DX, strPos
+    ; --- if reaches here, then number is negative ---         
+    LEA DX, strNeg
     INT 21h
-    ret
+    JMP exit
     
-    nega:
-    LEA DX, strNeg  
+    pos:
+    LEA DX, strPos  
     INT 21h
-    ret
+    JMP exit
         
     zero:
     LEA DX, strZero
     INT 21h
-    ret                 
+    JMP exit 
+    
+    
+    exit:
+        MOV AH, 04Ch
+        INT 21h               
 
 ret
-
-
-
-
