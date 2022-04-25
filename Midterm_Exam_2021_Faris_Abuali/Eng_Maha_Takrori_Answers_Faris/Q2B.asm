@@ -62,12 +62,8 @@ org 100h
     
     ; -- print the count
     MOV DL, count  
-    ADD DL, 30h
+    ADD DL, 30h ;convert the number to its ASCII code
     MOV AH, 02h
     INT 21h
     
 ret
-
-
-
-
