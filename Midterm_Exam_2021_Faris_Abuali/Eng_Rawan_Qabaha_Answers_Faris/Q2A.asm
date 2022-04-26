@@ -23,13 +23,13 @@ org 100h
               MOV AH, 02h
               INT 21h
               INC SI
-            Loop inner
+            Loop inner 
+        ; Note: when exits the inner loop, CX = 0 now. So:
+        ; -- Restore the value of the counter CX --
+        MOV CX, 0000h
+        MOV CL, strLen   
         ; -- decrement strLen --
         DEC strLen
-        ; -- update the counter CX --
-        MOV CX, 0000h
-        MOV CL, strLen 
-        INC CL
         ; --- print new line ---
         LEA DX, newLine
         MOV AH, 09h
